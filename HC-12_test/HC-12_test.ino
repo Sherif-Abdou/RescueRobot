@@ -18,9 +18,8 @@ void loop() {
   while (HC12.available()) {        // If HC-12 has data
    // Serial.write(HC12.read());      // Send the data to Serial monitor
           readBuffer = HC12.read();
-          if(1 = readBuffer){
-   Serial.println("daboonhaters");
-    }  
+      
+    
   }
   while (Serial.available()) {      // If Serial monitor has data
    // readBuffer = Serial.available();
