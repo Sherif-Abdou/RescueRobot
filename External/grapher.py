@@ -8,23 +8,22 @@ def shift(deg, by):
     newVal = deg+by
     if newVal > 360:
         newVal -= 360
+    return newVal
 
 def genFigure(input,lock):
     data = input
     fig = plt.figure()
     ax1 = fig.add_subplot(1,1,1,polar=True)
-    for x in range(360):
-        data.append(random.randint(0, 20))
 
     def animate(i):
         lock.acquire()
         ax1.clear()
         f = 0
         for mag in data:
-            ax1.plot(radians(f), mag, "bo--")
+            ax1.plot(radians(shift(f, 90)), mag, "bo--")
             f+=1
         lock.release()
-        ax1.set_xticklabels(['N', 'NW', 'W', 'SW', 'S', 'SE', 'E', 'NE'])
+        ax1.set_xticklabels(["E", "NE", "N", "NW", "W", "SW", "S", "SE"])
         plt.draw()
         plt.pause(0.001)
 
