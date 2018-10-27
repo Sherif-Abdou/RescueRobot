@@ -7,9 +7,11 @@ class Lights():
         self.test = test_mode
         self.serial = light_serial
 
+    # Returns a tuple with the status of both lights
     def getLights(self):
         return self._l1, self._l2
 
+    # Sets one of the lights to a new status
     def setLight(self, l: int, value: bool):
         if l == 1:
             self._l1 = value
@@ -21,6 +23,7 @@ class Lights():
             return self._l2
         else:
             return
+    # Sends any updates to an arduino
     def _update(self, i: int):
         if not self.test:
             output = "l"
