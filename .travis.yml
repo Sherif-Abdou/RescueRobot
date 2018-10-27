@@ -4,4 +4,5 @@ python:
   - "pypy3.5"
 script:
   - python -m pip install -r Main/requirements.txt
-  - pytest Main/
+  - cd Main/
+  - python -m pytest .
