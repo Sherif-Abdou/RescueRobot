@@ -1,9 +1,10 @@
 from serial import Serial
 # The class responsible for handling the robot's lights
 class Lights():
-    def __init__(self, light_serial: Serial):
+    def __init__(self, light_serial: Serial=None, test_mode=False):
         self._l1 = False
         self._l2 = False
+        self.test = test_mode
         self.serial = light_serial
 
     def getLights(self):
@@ -21,16 +22,17 @@ class Lights():
         else:
             return
     def _update(self, i: int):
-        output = "l"
-        output += i
-        if i == 1:
-            if self._l1:
-                output+="+"
-            elif not self._l1:
-                output+="-"
-        elif i == 2:
-            if self._l2:
-                output+="+"
-            elif not self._l2:
-                output+="-"
-        self.serial.write(output)
+        if not self.test:
+            output = "l"
+            output += i
+            if i == 1:
+                if self._l1:
+                    output+="+"
+                elif not self._l1:
+                    output+="-"
+            elif i == 2:
+                if self._l2:
+                    output+="+"
+                elif not self._l2:
+                    output+="-"
+            self.serial.write(output)
