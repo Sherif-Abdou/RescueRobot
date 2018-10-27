@@ -1,2 +1,3 @@
 External/\.vscode/
 .vscode
+External/__pycache__/
