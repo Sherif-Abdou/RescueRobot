@@ -27,17 +27,18 @@ class Lights():
             return
     # Sends any updates to an arduino
     def _update(self, i: int):
+        output = "l"
+        output += str(i)
+        if i == 1:
+            if self._l1:
+                output+="+"
+            elif not self._l1:
+                output+="-"
+        elif i == 2:
+            if self._l2:
+                output+="+"
+            elif not self._l2:
+                output+="-"
         if not self.test:
-            output = "l"
-            output += i
-            if i == 1:
-                if self._l1:
-                    output+="+"
-                elif not self._l1:
-                    output+="-"
-            elif i == 2:
-                if self._l2:
-                    output+="+"
-                elif not self._l2:
-                    output+="-"
             self.serial.write(output)
+        return output
