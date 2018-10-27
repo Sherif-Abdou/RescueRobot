@@ -1,4 +1,4 @@
-# RescueRobot
+# RescueRobot [![Build Status](https://travis-ci.com/Sherif-Abdou/RescueRobot.svg?branch=RobotImage)](https://travis-ci.com/Sherif-Abdou/RescueRobot)
 A Rescue Robot program for Synopsis Science Fair 2019
 
 # Installation
