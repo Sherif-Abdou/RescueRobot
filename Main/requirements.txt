@@ -1,6 +1,7 @@
 astroid==2.0.4
 atomicwrites==1.2.1
 attrs==18.2.0
+certifi==2018.10.15
 cycler==0.10.0
 isort==4.3.4
 kiwisolver==1.0.1
@@ -19,5 +20,7 @@ pyparsing==2.2.2
 pyserial==3.4
 pytest==3.9.2
 python-dateutil==2.7.3
+sentry-sdk==0.5.1
 six==1.11.0
+urllib3==1.24
 wrapt==1.10.11
