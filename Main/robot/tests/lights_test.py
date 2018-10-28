@@ -2,10 +2,6 @@ from robot.lights import Lights
 import sentry_sdk
 import pytest
 
-@pytest.fixture(scope="session", autouse=True)
-def do_something():
-    sentry_sdk.init("https://1e9819f95a3d46fdb1ef8c96287c29e8@sentry.io/1310445")
-
 def test_get_lights():
     lights = Lights(test_mode=True)
     assert lights.getLights() == (False,False)

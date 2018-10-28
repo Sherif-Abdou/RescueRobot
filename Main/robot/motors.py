@@ -5,14 +5,17 @@ class Motors():
         self.spm = stepsPerRevolution
         self.serial = Serial
         self.test = test_mode
+        # Statuses of all four motors, from -1 to 1
         self._m1 = 0
         self._m2 = 0
         self._m3 = 0
         self._m4 = 0
     
+    # Returns a tuple with all the motor statuses
     def getMotorSpeeds(self):
         return self._m1, self._m2, self._m3, self._m4
 
+    # Changes the motor speed of a specific motor and updates the arduino with that
     def setMotorSpeed(self, m: int, speed: int):
         if m == 1:
             self._m1 = speed
@@ -32,6 +35,7 @@ class Motors():
             return self._m4
         else: return
     
+    # Sends the packet to change motor speed through seiral connection
     def _update(self, m: int):
         output = "m"+str(m)
         mstr = ""
@@ -44,6 +48,7 @@ class Motors():
         elif m == 4:
             mstr = self._m4
         output += str(mstr)
+        # Doesn't actually use serial port when testing
         if not self.test:
             self.serial.write(output)
         return output
