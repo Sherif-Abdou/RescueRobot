@@ -1,4 +1,3 @@
-from threading import Thread
 from serial import Serial
 
 class DistanceSensor():
