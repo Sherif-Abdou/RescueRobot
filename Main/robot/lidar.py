@@ -11,6 +11,6 @@ class Lidar:
 
 
     def updateMeasures(self):
-        for scan in self.lidar.iter_scans():
-            if float(scan[1]).is_integer():
-                self.data[int(scan[1])] = scan[2]
+        for _, _, angle, measure in self.lidar.iter_measurments():
+            if float(angle).is_integer():
+                self.data[int(angle)] = measure
