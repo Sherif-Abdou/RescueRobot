@@ -14,3 +14,4 @@ class Lidar:
         for _, _, angle, measure in self.lidar.iter_measurments():
             if float(angle).is_integer():
                 self.data[int(angle)] = measure
+

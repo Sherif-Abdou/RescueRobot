@@ -49,6 +49,14 @@ class Motors():
             mstr = self._m3
         elif m == 4:
             mstr = self._m4
+
+        # Convert 1 or -1 into a plus or minus for easier transmission
+        if mstr == -1:
+            mstr = "-"
+        elif mstr == 1:
+            mstr = "+"
+
+
         output += str(mstr)
         # Doesn't actually use serial port when testing
         if not self.test:
