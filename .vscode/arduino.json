@@ -1,5 +1,6 @@
 {
-    "board": "esp8266:esp8266:d1",
-    "configuration": "CpuFrequency=80,VTable=flash,FlashSize=4M1M,LwIPVariant=v2mss536,Debug=Disabled,DebugLevel=None____,FlashErase=none,UploadSpeed=921600",
-    "port": "COM16"
+    "board": "arduino:avr:nano",
+    "configuration": "cpu=atmega328old",
+    "port": "COM16",
+    "sketch": "Arduino Sketches\\lsm9ds1\\lsm9ds1.ino"
 }
