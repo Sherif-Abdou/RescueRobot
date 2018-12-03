@@ -20,12 +20,13 @@ void loop() {
     while(hc12.available()) {
         hc12 = hc12.read();
     }
-    
+
     if (hc12buffer != "") {
         Serial.write(hc12buffer);
     }
-    
+
     if (serialbuffer != "") {
         hc12.write(serialbuffer);
     }
+
 }
