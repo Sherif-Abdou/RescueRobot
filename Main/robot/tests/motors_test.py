@@ -18,5 +18,5 @@ def test_updateMotors():
     motors = Motors(200, test_mode=True)
     for x in range(1, 4):
         motors.setMotorSpeed(x, 1)
-        assert motors._update(x) == "m"+str(x)+"1"
+        assert motors._update(x) == "m"+str(x)+"+"
         motors.setMotorSpeed(x, 0)
