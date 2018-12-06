@@ -1,3 +1,4 @@
 External/\.vscode/
 .vscode
 External/__pycache__/
+Main/venv
