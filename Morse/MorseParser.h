@@ -13,6 +13,7 @@ public:
     MorseParser();
 
     string parseMorse(vector<int> morse);
+    vector<int> toMorse(string message);
 private:
     vector<int> a = {1, 0, 1, 1, 1};
     vector<int> b = {1, 1, 1, 0, 1, 0, 1, 0, 1};

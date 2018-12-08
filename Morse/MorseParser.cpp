@@ -81,3 +81,95 @@ string MorseParser::parseMorse(vector<int> morse) {
     }
     return result;
 }
+
+vector<int> MorseParser::toMorse(string message) {
+    auto morse = vector<int>();
+    vector<int> letterspace = {0, 0, 0};
+    vector<int> ending = {0, 0};
+    for (auto& character: message) {
+        if (character == ' ') {
+            morse.insert(morse.end(), ending.begin(), ending.end());
+            continue;
+        }
+        switch (character) {
+            case 'a':
+                morse.insert(morse.end(), this->a.begin(), this->a.end());
+                break;
+            case 'b':
+                morse.insert(morse.end(), this->b.begin(), this->b.end());
+                break;
+            case 'c':
+                morse.insert(morse.end(), this->c.begin(), this->c.end());
+                break;
+            case 'd':
+                morse.insert(morse.end(), this->d.begin(), this->d.end());
+                break;
+            case 'e':
+                morse.insert(morse.end(), this->e.begin(), this->e.end());
+                break;
+            case 'f':
+                morse.insert(morse.end(), this->f.begin(), this->f.end());
+                break;
+            case 'h':
+                morse.insert(morse.end(), this->h.begin(), this->h.end());
+                break;
+            case 'i':
+                morse.insert(morse.end(), this->i.begin(), this->i.end());
+                break;
+            case 'j':
+                morse.insert(morse.end(), this->j.begin(), this->j.end());
+                break;
+            case 'k':
+                morse.insert(morse.end(), this->k.begin(), this->k.end());
+                break;
+            case 'l':
+                morse.insert(morse.end(), this->l.begin(), this->l.end());
+                break;
+            case 'm':
+                morse.insert(morse.end(), this->m.begin(), this->m.end());
+                break;
+            case 'n':
+                morse.insert(morse.end(), this->n.begin(), this->n.end());
+                break;
+            case 'o':
+                morse.insert(morse.end(), this->o.begin(), this->o.end());
+                break;
+            case 'p':
+                morse.insert(morse.end(), this->p.begin(), this->p.end());
+                break;
+            case 'q':
+                morse.insert(morse.end(), this->q.begin(), this->q.end());
+                break;
+            case 'r':
+                morse.insert(morse.end(), this->r.begin(), this->r.end());
+                break;
+            case 's':
+                morse.insert(morse.end(), this->s.begin(), this->s.end());
+                break;
+            case 't':
+                morse.insert(morse.end(), this->t.begin(), this->t.end());
+                break;
+            case 'u':
+                morse.insert(morse.end(), this->u.begin(), this->u.end());
+                break;
+            case 'v':
+                morse.insert(morse.end(), this->v.begin(), this->v.end());
+                break;
+            case 'w':
+                morse.insert(morse.end(), this->w.begin(), this->w.end());
+                break;
+            case 'x':
+                morse.insert(morse.end(), this->x.begin(), this->x.end());
+                break;
+            case 'y':
+                morse.insert(morse.end(), this->y.begin(), this->y.end());
+                break;
+            case 'z':
+                morse.insert(morse.end(), this->z.begin(), this->z.end());
+                break;
+        }
+        morse.insert(morse.end(), letterspace.begin(), letterspace.end());
+    }
+    morse.insert(morse.end(), ending.begin(), ending.end());
+    return morse;
+}
