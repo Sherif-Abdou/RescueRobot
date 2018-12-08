@@ -11,10 +11,10 @@ auto x = 0;
 int lightPins[] = {2, 3};
 int hc12rx = 0;
 int hc12tx = 1;
-
+int distancepin = 8;
 
 ServoPins servopins[3];
-// SoftwareSerial HC12(hc12rx, hc12tx);
+// volitile SoftwareSerial HC12(hc12rx, hc12tx);
 
 void parseCommand(String commandd) {
 	int number;
@@ -27,17 +27,17 @@ void parseCommand(String commandd) {
 			// analogWrite(servopins[number].mainpin, 30);
 			// digialWrite(servopins[number].in1, LOW);
 			// digialWrite(servopins[number].in2, HIGH);
-			Serial.println("Forward");
+      Serial.println("Forward");
 			break;
 		case '-':
 			// analogWrite(servopins[number].mainpin, 30);
 			// digialWrite(servopins[number].in1, HIGH);
 			// digialWrite(servopins[number].in2, LOW);
-			Serial.println("Backward");
+      Serial.println("Backward");
 			break;
 		case '0':
 			// analogWrite(servopins[number].mainpin, 0);
-			Serial.println("Stop");
+      Serial.println("Stop");
 			break;
 		default: break;
 		}
@@ -66,6 +66,10 @@ void messages(SoftwareSerial& hc12) {
 			auto readbuffer = hc12.read();
 			Serial.write(readbuffer);
 		}
+		if (Serial.available()) {
+			auto readbuffer = Serial.read();
+			hc12.write(readbuffer);
+		}
 	}
 }
 
@@ -77,17 +81,25 @@ void test(int counter) {
 	}
 }
 
+void sensorData() {
+	auto duration = pulseIn(distancepin, HIGH);
+	auto distance = duration*0.034/2;
+	auto distanceMessage = "l" + String(distance);
+	Serial.println(distanceMessage);
+}
+
 void setup() {
 	Serial.begin(115200);
 //  for (auto i = 0; i < 4; i++) {
 //    servos[i].attach(servoPins[i])
 //  }
 	// threads.addThread(messages, HC12);
-	threads.addThread(test, x);
+	// threads.addThread(test, x);
 }
 
 void loop() {
 	parseCommand("m3+");
+	Serial.println(String(5.25));
 	delay(3000);
 	parseCommand("l2-");
 	delay(10000);
