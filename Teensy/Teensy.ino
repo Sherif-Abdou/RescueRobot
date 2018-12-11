@@ -1,19 +1,21 @@
 #include <SoftwareSerial.h>
 #include <TeensyThreads.h>
 
+// Data Structure holding the three apins for each Servo
 struct ServoPins {
 	int mainpin;
 	int in1;
 	int in2;
 };
 
+// Pin location variables
 auto x = 0;
-int lightPins[] = {2, 3};
-int hc12rx = 0;
-int hc12tx = 1;
-int distancepin = 8;
+const int lightPins[] = {2, 3};
+const int hc12rx = 0;
+const int hc12tx = 1;
+const int distancepin = 8;
 
-ServoPins servopins[3];
+ServoPins servopins[4];
 // volitile SoftwareSerial HC12(hc12rx, hc12tx);
 
 void parseCommand(String commandd) {
@@ -94,7 +96,6 @@ void setup() {
 //    servos[i].attach(servoPins[i])
 //  }
 	// threads.addThread(messages, HC12);
-	// threads.addThread(test, x);
 }
 
 void loop() {

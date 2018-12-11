@@ -37,7 +37,7 @@ class Motors():
         else:
             return
 
-    # Sends the packet to change motor speed through seiral connection
+    # Sends the packet to change motor speed through serial connection
     def _update(self, m: int):
         output = "m" + str(m)
         mstr = ""

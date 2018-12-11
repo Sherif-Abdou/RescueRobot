@@ -13,4 +13,5 @@ class DistanceSensor():
             raw_data = data
         if raw_data[0] == "d":
             raw_data = raw_data.lstrip("d")
+            self.distance = float(raw_data)
             return float(raw_data)
