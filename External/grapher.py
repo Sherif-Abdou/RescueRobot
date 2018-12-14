@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from math import radians
 
-
+plt.switch_backend("QT5Agg")
 # Shifts a degree by a certain amount, cycling back to 0 if the new value passes 360
 def shift(deg, by):
     new_val = deg+by
@@ -16,19 +16,20 @@ def genFigure(input,lock):
     # Initializes Figures
     fig = plt.figure()
     ax1 = fig.add_subplot(1,1,1,polar=True)
-    ax1.set_xticklabels(["E", "NE", "N", "NW", "W", "SW", "S", "SE"])
-
     # Updates the graph with new data
     def animate(i):
-        lock.acquire()
+        # lock.acquire()
         ax1.clear()
+        ax1.set_xticklabels(["E", "NE", "N", "NW", "W", "SW", "S", "SE"])
+        ax1.set_ylim(0, 4)
         f = 0
         for mag in data:
-            ax1.plot(radians(shift(f, 90)), mag, "bo--")
+            if mag <= 4:
+                ax1.plot(radians(shift(f, 90)), mag, "k.")
             f+=1
-        lock.release()
-        plt.draw()
-        plt.pause(0.001)
+        # lock.release()
     # Displays graph
-    ani = animation.FuncAnimation(fig, animate, interval=500)
+    ani = animation.FuncAnimation(fig, animate, interval=1)
+    figManager = plt.get_current_fig_manager()
+    figManager.window.showMaximized()
     plt.show()
