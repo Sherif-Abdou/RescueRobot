@@ -10,9 +10,16 @@ def shift(deg, by):
         new_val -= 360
     return new_val
 
+def reflect(deg):
+    deg_shift = abs(180-deg)
+    if deg < 180:
+        return 180+deg_shift
+    else:
+        return 180-deg_shift
 
 def genFigure(input,lock):
     data = input
+    ymax = 10
     # Initializes Figures
     fig = plt.figure()
     ax1 = fig.add_subplot(1,1,1,polar=True)
@@ -21,11 +28,11 @@ def genFigure(input,lock):
         # lock.acquire()
         ax1.clear()
         ax1.set_xticklabels(["E", "NE", "N", "NW", "W", "SW", "S", "SE"])
-        ax1.set_ylim(0, 4)
+        ax1.set_ylim(0, ymax)
         f = 0
         for mag in data:
-            if mag <= 4:
-                ax1.plot(radians(shift(f, 90)), mag, "k.")
+            if mag <= ymax:
+                ax1.plot(radians(shift(reflect(f), 90)), mag, "k.")
             f+=1
         # lock.release()
     # Displays graph

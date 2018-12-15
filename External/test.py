@@ -6,10 +6,13 @@ import urllib.request
 from json import loads
 
 data = [0 for _ in range(360)]
-url = "http://192.168.86.170:3000/lidar"
+url = "http://raspberrypi.local:3000/lidar"
 def change(data):
     while True:
-        raw_input = urllib.request.urlopen(url)
+        try:
+            raw_input = urllib.request.urlopen(url)
+        except:
+            exit()
         json_data = raw_input.read().decode('utf-8')
         new_data = loads(json_data)
         # print(json)
@@ -21,5 +24,6 @@ def change(data):
 
 lock = Lock()
 thread = Thread(target=change, args=(data,))
+thread.daemon=True
 thread.start()
 grapher.genFigure(data, lock)
