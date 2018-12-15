@@ -19,7 +19,7 @@ def reflect(deg):
 
 def genFigure(input,lock):
     data = input
-    ymax = 10
+    ymax = 4
     # Initializes Figures
     fig = plt.figure()
     ax1 = fig.add_subplot(1,1,1,polar=True)
