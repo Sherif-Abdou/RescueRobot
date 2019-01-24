@@ -33,7 +33,7 @@ def genFigure(input,lock):
         for mag in data:
             if mag <= ymax:
                 ax1.plot(radians(shift(reflect(f), 90)), mag, "k.")
-            f+=1
+            f+=0.5
         # lock.release()
     # Displays graph
     ani = animation.FuncAnimation(fig, animate, interval=1)

@@ -5,20 +5,26 @@ from robot.motors import Motors
 from robot.lidar import Lidar
 from robot.distance import DistanceSensor
 from time import sleep
+from lidar import RPLidar
+from threading import Thread
+from robot.mic import Mic
 import zlib
 import json
 
 
 class Robot():
-    def __init__(self, serial: Serial):
+    def __init__(self, serial: Serial, lidar: RPLidar):
         self.serial = serial
         self.gyro = Gyro()
         self.lights = Lights()
-        self.motors = Motors()
+        self.motors = Motors(1)
         self.lidar = Lidar()
         self.distance_sensor = DistanceSensor()
         self.rotation = Rotation()
         self.acceleration = Acceleration()
+        self.mic = Mic()
+        self.parser = Thread(self.parseInputs, daemon=True)
+        self.sender = Thread(self.sendLidarOutput, daemon=True)
 
     def parseInputs(self):
         while True:
@@ -34,6 +40,8 @@ class Robot():
                     output = self.gyro.getGyroData(new_data)
                     self.rotation = output[0]
                     self.acceleration = output[1]
+                elif data[0] == 'a':
+                    self.mic.parseInput(data)
                 self.serial.reset_input_buffer()
 
     def sendLidarOutput(self):

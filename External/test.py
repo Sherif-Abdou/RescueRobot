@@ -5,8 +5,9 @@ import urllib.parse
 import urllib.request
 from json import loads
 
-data = [0 for _ in range(360)]
+data = [0 for _ in range(722)]
 url = "http://raspberrypi.local:3000/lidar"
+
 def change(data):
     while True:
         try:

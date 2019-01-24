@@ -1,107 +1,80 @@
-#include <SoftwareSerial.h>
+#include <DFRobot_VL53L0X.h>
+#include <Adafruit_LSM9DS1.h>
 #include <TeensyThreads.h>
+#include <SoftwareSerial.h>
+#include <Wire.h>
 
-// Data Structure holding the three apins for each Servo
-struct ServoPins {
-	int mainpin;
-	int in1;
-	int in2;
-};
+// Sensors
+DFRobotVL53L0X distance_sensor;
+Adafruit_LSM9DS1 gyro = Adafruit_LSM9DS1();
+const int mic[3] {A9, A8, A1};
 
-// Pin location variables
-auto x = 0;
-const int lightPins[] = {2, 3};
-const int hc12rx = 0;
-const int hc12tx = 1;
-const int distancepin = 8;
+// Sensor data
+sensors_event_t accel, mag, rot, temp;
+volatile double distance;
+volatile double amp[3] {0.0, 0.0, 0.0};
 
-ServoPins servopins[4];
-// volitile SoftwareSerial HC12(hc12rx, hc12tx);
 
-void parseCommand(String commandd) {
-	int number;
-	switch (commandd[0]) {
-	case 'm':
-		Serial.println("motor change");
-		number = ((int)commandd[1] - 48)-1;
-		switch(commandd[2]) {
-		case '+':
-			// analogWrite(servopins[number].mainpin, 30);
-			// digialWrite(servopins[number].in1, LOW);
-			// digialWrite(servopins[number].in2, HIGH);
-      Serial.println("Forward");
-			break;
-		case '-':
-			// analogWrite(servopins[number].mainpin, 30);
-			// digialWrite(servopins[number].in1, HIGH);
-			// digialWrite(servopins[number].in2, LOW);
-      Serial.println("Backward");
-			break;
-		case '0':
-			// analogWrite(servopins[number].mainpin, 0);
-      Serial.println("Stop");
-			break;
-		default: break;
-		}
-		Serial.println(number);
-		break;
-	case 'l':
-		Serial.println("light signal");
-		number = (int)commandd[1] - 48;
-		Serial.println(number);
-		switch(commandd[2]) {
-		case '+':
-//        digitalWrite(lightPins[number-1], LOW);
-			Serial.println(HIGH);
-		case '-':
-//        digitalWrite(ligthPins[number-1], HIGH);
-			Serial.println(LOW);
-		default: break;
-		}
-		break;
-	}
+// Collects sensor data
+void sensor_collection() {
+  while (true) {
+    gyro.getEvent(&accel, &mag, &rot, &temp);
+    distance = distance_sensor.getDistance();
+  }
 }
 
-void messages(SoftwareSerial& hc12) {
-	while (true) {
-		if (hc12.available()) {
-			auto readbuffer = hc12.read();
-			Serial.write(readbuffer);
-		}
-		if (Serial.available()) {
-			auto readbuffer = Serial.read();
-			hc12.write(readbuffer);
-		}
-	}
-}
+void mic_collection(int micnum) {
+  while (true) {
+    unsigned int sample;
+    unsigned long startMillis = millis(); // Start of sample window
+    unsigned int peakToPeak = 0;   // peak-to-peak level
 
-void test(int counter) {
-	while (true) {
-		counter++;
-		Serial.println(counter);
-		delay(100);
-	}
-}
+    unsigned int signalMax = 0;
+    unsigned int signalMin = 1024;
 
-void sensorData() {
-	auto duration = pulseIn(distancepin, HIGH);
-	auto distance = duration*0.034/2;
-	auto distanceMessage = "l" + String(distance);
-	Serial.println(distanceMessage);
+    // collect data for 50 mS
+    while (millis() - startMillis < 50)
+    {
+      sample = analogRead(mic[micnum]);
+      if (sample < 1024)
+      {
+        if (sample > signalMax)
+        {
+          signalMax = sample;
+        }
+        else if (sample < signalMin)
+        {
+          signalMin = sample;
+        }
+      }
+    }
+    amp[micnum] = (signalMax + signalMin)/2;
+  }
 }
 
 void setup() {
-	Serial.begin(115200);
-//  for (auto i = 0; i < 4; i++) {
-//    servos[i].attach(servoPins[i])
-//  }
-	// threads.addThread(messages, HC12);
+  Serial.begin(115200);
+  Wire.begin();
+  // Set I2C sub-device address
+  distance_sensor.begin(0x50);
+  // Sensor Config
+  distance_sensor.setMode(Continuous, High);
+  gyro.setupAccel(gyro.LSM9DS1_ACCELRANGE_2G);
+  gyro.setupMag(gyro.LSM9DS1_MAGGAIN_4GAUSS);
+  gyro.setupGyro(gyro.LSM9DS1_GYROSCALE_245DPS);
+  // Starting the Sensor
+  distance_sensor.start();
+  gyro.begin();
+  // Starting Background Threads
+  threads.addThread(sensor_collection);
+  threads.addThread(mic_collection, 0);
+  threads.addThread(mic_collection, 1);
+  threads.addThread(mic_collection, 2);
 }
 
 void loop() {
-	parseCommand("m3+");
-	Serial.println(String(5.25));
-	delay(3000);
-	parseCommand("l2-");
-	delay(10000);
+  Serial.println("d" + String(distance));
+  Serial.println("g"+String(accel.acceleration.x)+" "+String(accel.acceleration.y)+" "+String(accel.acceleration.z)+":"+String(rot.gyro.x)+" "+String(rot.gyro.y)+" "+ String(rot.gyro.z));
+  Serial.println("a" + String(amp[0]));
+  delay(1000);
 }

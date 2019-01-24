@@ -2,7 +2,7 @@ from serial import Serial
 
 
 class Motors():
-    def __init__(self, stepsPerRevolution: int, serial: Serial = None, test_mode=False):
+    def __init__(self, stepsPerRevolution: int=0, serial: Serial = None, test_mode=False):
         self.spm = stepsPerRevolution
         self.serial = Serial
         self.test = test_mode
