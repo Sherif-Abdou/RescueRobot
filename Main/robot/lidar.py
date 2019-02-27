@@ -1,5 +1,6 @@
 from rplidar import RPLidar
 from threading import Thread
+from math import floor
 
 class Lidar:
     def __init__(self, lidar: RPLidar=None):
@@ -11,6 +12,6 @@ class Lidar:
         self.updater.start()
 
     def updateMeasures(self):
-        for _, _, angle, measure in self.lidar.iter_measurments():
-            if float(angle).is_integer():
-                self.data[int(angle)] = measure
+        if self.lidar != None:
+            for _, _, angle, measure in self.lidar.iter_measurments():
+                self.data[floor(angle)] = measure
