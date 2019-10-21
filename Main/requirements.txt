@@ -12,5 +12,5 @@ pytest==3.9.2
 python-dateutil==2.7.3
 sentry-sdk==0.5.1
 six==1.11.0
-urllib3==1.24
+urllib3==1.24.2
 wrapt==1.10.11
